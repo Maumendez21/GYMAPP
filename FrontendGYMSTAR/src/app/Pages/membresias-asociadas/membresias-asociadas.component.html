@@ -1,0 +1,53 @@
+
+
+<div class="row">
+    <div class="col-12">
+         <nz-table
+                    #dynamicTable
+                    [nzScroll]="{ x: 'fixed', y: 'scroll' }"
+                    [nzData]="listOfData"
+                    [nzPaginationType]="settingValue.paginationType"
+                    [nzPaginationPosition]="settingValue.position"
+                    [nzShowSizeChanger]="settingValue.sizeChanger"
+                    [nzFrontPagination]="settingValue.pagination"
+                    [nzShowPagination]="settingValue.pagination"
+                    [nzSize]="settingValue.size"
+                    (nzCurrentPageDataChange)="currentPageDataChange($event)"
+                >
+                    <thead class="thead-dark">
+                        <tr >
+                            <th nzWidth="80px"  [nzLeft]="fixedColumn">Detalle</th>
+                            <th>Membresia</th>
+                            <th>Fecha de Pago</th>
+                            <th>Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container *ngFor="let data of dynamicTable.data">
+                        <tr>
+                            <td [nzLeft]="fixedColumn" *ngIf="settingValue.expandable" [(nzExpand)]="data.expand"></td>
+                            <td [nzLeft]="fixedColumn">{{ data.memnombre }}</td>
+                            <td>{{ data.fechaPago | date }}</td>
+                            <td>
+                                <span
+                                class="badge"
+                                [ngClass]="data.estId == 8 ? 'badge-success' : 'badge-danger'"
+                                >
+                                {{ data.estId == 8 ? "PAGADA" : "VENCIDA" }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr [nzExpand]="data.expand">
+                            <h6 >{{ data.memdescripcion }}</h6>
+                            <nz-list nzBordered nzSize="small">
+                                <nz-list-header>Integrantes</nz-list-header>
+                                <nz-list-item *ngFor="let item of data.users">{{item.usrnombre}} {{item.usrapp}} {{item.usrapm}} - {{item.usremail}} - {{item.usrtelefono || 'Sin teléfono'}}</nz-list-item>
+                            </nz-list>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </nz-table>
+    </div>
+</div>
+
+

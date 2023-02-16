@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+
+body{
+    /* background-color: rgb(246 246 247)!important; */
+}
+
+.ant-btn-primary{
+    background: rgb(30 61 115)!important;
+    border-color: rgb(30 61 115)!important;
+}
+
+.invalid-feedback {
+    display: block!important;}

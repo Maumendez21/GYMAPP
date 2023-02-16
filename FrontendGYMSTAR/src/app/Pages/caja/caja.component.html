@@ -1,0 +1,302 @@
+<div class="row">
+  <div class="col-12 mt-3">
+    <div class="card">
+      <div class="card-header  justify-content-between align-items-center">                               
+
+
+        <div class="row">
+          <div class="col-md-11">
+            <nz-alert
+            [nzType]="_caja === null ? 'error' : 'success'"
+            [nzMessage]="_caja === null ? 'Caja Cerrada' : 'Caja Abierta'"
+            nzShowIcon
+            ></nz-alert>
+          </div>
+          <div *ngIf="_caja !== null" class="col-md-1 mt-2">
+            <button (click)="showCerrarCaja()" class="btn btn-danger btn-sm" >Cerrar Caja</button>
+          </div>
+        </div>
+        
+
+      </div>
+      <div *ngIf="_caja === null" class="card-body">
+        <div class="text-center" >
+          <h5>Abre caja para comenzar a vender.</h5>
+          <button type="button" class="btn btn-outline-success" (click)="showModal()">Abrir Caja</button>
+        </div>
+      </div>                                
+    </div>
+  </div>
+</div>
+
+<div *ngIf="_caja !== null">
+
+  <div class="row">
+
+    <div class="col-6 col-md-6 col-lg-6 mt-3">
+        <div class="card border">                            
+            <div class="card-content">
+                <div class="card-body p-4">   
+                    <div class="d-md-flex">
+                        <div class="my-auto">
+                            <img src="assets/images/wallet.png" alt="author" class="my-auto">
+                        </div>
+                        <div class="content px-md-3 my-3 my-md-0">                                           
+                            <span class="mb-0 font-w-600 h5">Caja abierta desde:</span><br>
+                            <p class="mb-0 font-w-500 tx-s-22">{{fechaper}}</p>                                                    
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-6 col-lg-6 mt-3">
+        <div class="card outline-badge-primary">                            
+            <div class="card-content">
+                <div class="card-body p-4">   
+                    <div class="d-md-flex">
+                        <div class="my-auto">
+                            <img src="assets/images/money.png" alt="author" class="my-auto">
+                        </div>
+                        <div class="content px-md-3 my-3 my-md-0">                                           
+                            <span class="mb-0 font-w-600 h5">Total en caja:</span><br>
+                            <p class="mb-0 font-w-500 tx-s-22">${{totalCaja}}</p>                                                    
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-12 mt-3">
+      <div class="card">
+          <div class="card-header  justify-content-between align-items-center">                               
+              <h4 class="card-title">Acciones de caja</h4> 
+          </div>
+          <div class="card-body">                                     
+            <nz-tabset [nzSelectedIndex]="actionActive"  nzTabPosition="top">
+              <nz-tab  [nzTitle]="titleTemplate1">
+                <ng-template #titleTemplate1>
+                  <i class="icon-bag"></i>
+                  Historial de ventas
+                </ng-template>
+                <app-historial-ventas [idUserReg]="idUser" [idUserGym]="idGym" [idCaja]="idCaja"></app-historial-ventas>
+                
+
+              </nz-tab>
+              <nz-tab  [nzTitle]="titleTemplate2">
+
+                <ng-template #titleTemplate2>
+                  <i class="icon-plus"></i>
+                  Nueva Venta
+                </ng-template>
+                <app-nueva-venta [idUserReg]="idUser" [idUserGym]="idGym" [idCaja]="idCaja"></app-nueva-venta>
+
+              </nz-tab>
+              <nz-tab  [nzTitle]="titleTemplate3">
+                <ng-template #titleTemplate3>
+                  <i class="icon-check"></i>
+                  Pagar Subscripción
+                </ng-template>
+                 <app-pagar-subscripcion [idUserReg]="idUser" [idUserGym]="idGym" [idCaja]="idCaja"></app-pagar-subscripcion>
+
+
+              </nz-tab>
+              <nz-tab [nzTitle]="titleTemplate4">
+                <ng-template #titleTemplate4>
+                  <i class="icon-user-follow"></i>
+                  Nuevo Socio
+                </ng-template>
+                <app-nuevo-subscriptor [idUserReg]="idUser" [idUserGym]="idGym" [idCaja]="idCaja"></app-nuevo-subscriptor>
+
+
+              </nz-tab>
+            </nz-tabset>
+          </div>
+      </div> 
+
+  </div>
+  </div>
+
+
+  
+
+</div>
+
+<nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Abrir Caja"
+    [nzFooter]="null"
+    [nzOkLoading]="isOkLoading"
+    nzClosable="false"
+    nzMaskClosable="false"
+>
+        <!-- <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSpan]="8" nzErrorTip="Please input your name">
+          <input type="text" nz-input formControlName="name" placeholder="Please input your name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">
+          Nickname
+        </nz-form-label>
+        <nz-form-control [nzSpan]="8" nzErrorTip="Please input your nickname">
+          <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="8" [nzOffset]="4">
+          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">
+            Nickname is required
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="8" [nzOffset]="4">
+          <button nz-button nzType="primary">Check</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form> -->
+
+    <div *nzModalContent>
+    <form [formGroup]="cajaForm" nz-form (ngSubmit)="handleOk()">
+      <!-- <div class="form-group row">
+        <label for="nombre" class="col-sm-2 col-form-label">*Nombre</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            [ngClass]="membresiaForm.get('memnombre')?.hasError('required') ? 'is-invalid' : 'is-valid'"
+            formControlName="memnombre"
+            placeholder="Nombre de la membresia"
+          />
+          <div *ngIf="membresiaForm.get('memnombre')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="descripcion" class="col-sm-2 col-form-label"
+          >Descripción</label
+        >
+        <div class="col-sm-10">
+          <textarea
+            type="text"
+            formControlName="memdescripcion"
+            class="form-control"
+            id="descripcion"
+            placeholder="Descripción de la membresia"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="Precio" class="col-sm-2 col-form-label">*Precio</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            [ngClass]="membresiaForm.get('memprecio')?.hasError('required') ? 'is-invalid' : 'is-valid'"
+            id="Precio"
+            formControlName="memprecio"
+            placeholder="Precio de la membresia"
+          />
+
+            <div *ngIf="membresiaForm.get('memprecio')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="Duracion" class="col-sm-2 col-form-label">*Duración en días</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            [ngClass]="membresiaForm.get('memduracion')?.hasError('required') || membresiaForm.get('memduracion')?.hasError('min') ? 'is-invalid' : 'is-valid'"
+            id="Duracion"
+            formControlName="memduracion"
+            placeholder="Duración de la membresia"
+          />
+            <div *ngIf="membresiaForm.get('memduracion')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+            <div *ngIf="membresiaForm.get('memduracion')?.hasError('min')" class="invalid-feedback">
+                La duración debe ser mayor a 0.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="Cantidad" class="col-sm-2 col-form-label">*Cantidad</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            [ngClass]="membresiaForm.get('mempersonas')?.hasError('required') || membresiaForm.get('mempersonas')?.hasError('min') ? 'is-invalid' : 'is-valid'"
+            id="Cantidad"
+            formControlName="mempersonas"
+            placeholder="Cantidad de personas"
+          />
+            <div *ngIf="membresiaForm.get('mempersonas')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+            <div *ngIf="membresiaForm.get('mempersonas')?.hasError('min')" class="invalid-feedback">
+                La cantidad debe ser mayor a 0.
+            </div>
+        </div>
+      </div> -->
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzRequired nzFor="name">Monto de apertura $</nz-form-label>
+        <nz-form-control [nzSpan]="10" 
+        nzErrorTip="El campo es requerido.">
+          <input type="number" nz-input formControlName="cajamontoApertura" placeholder="Ingresa el monto inicial de la caja." />
+        </nz-form-control>
+      </nz-form-item>
+
+      <app-loading *ngIf="isOkLoading"></app-loading>
+
+      <div *ngIf="!isOkLoading" class="row mt-4">
+        <div class="col-6">
+          <button
+            class="btn-block"
+            nzType="primary"
+            nz-button
+            type="submit"
+            [nzLoading]="isOkLoading"
+            
+          >
+            Abrir caja
+          </button>
+        </div>
+        <div class="col-6">
+          <button
+            class="btn-block"
+            nz-button
+            nzType="default"
+            type="button"
+            (click)="handleCancel()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+   
+</nz-modal>

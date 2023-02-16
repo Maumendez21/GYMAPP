@@ -1,0 +1,49 @@
+<!-- <div id="main-wrapper" >
+
+
+    <app-navbar></app-navbar>
+
+    <app-sidebar></app-sidebar>
+
+    <div class="content-body">
+        <div class="container-fluid">
+            
+        </div>
+    </div>
+</div> -->
+
+
+    <!-- <div id="layout-wrapper" >
+    <app-navbar></app-navbar>
+
+    <app-sidebar *appRefreshSidebar="cargarSidebar"  ></app-sidebar>
+
+    <div class="main-content">
+        <div class="page-content">
+        <div class="container-fluid">
+        </div>
+    </div>
+</div>
+</div> -->
+
+<!--  -->
+
+
+<div class="se-pre-con" *ngIf="loading">
+    <div class="loader"></div>
+</div>
+
+<app-sidebar></app-sidebar>
+<app-navbar></app-navbar>
+
+
+<main>
+    <div class="container-fluid site-width " >
+
+        <app-breadcrumb></app-breadcrumb>
+        
+        <router-outlet style="margin-top: 20rem!important;" *ngIf="!loading"></router-outlet>
+    </div>
+</main>
+
+

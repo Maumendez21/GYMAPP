@@ -1,0 +1,205 @@
+<div class="row">
+  <div class="col-12 col-sm-12">
+    Tus membresias registradas.
+    <app-loading *ngIf="loading"></app-loading>
+    <div *ngIf="!loading" class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="showModal(null)"
+        >
+          Agregar nueva Membresia
+        </button>
+      </div>
+      <div class="card-body">
+
+        <div class="" *ngIf="listMembresia.length === 0">
+          <div class="alert alert-danger" role="alert">
+            No hay registros para mostrar
+          </div>
+        </div>
+
+
+        <nz-table *ngIf="listMembresia.length !== 0" #basicTable [nzData]="listMembresia">
+          <thead>
+            <tr>
+              <th>Acciones</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Duración en días</th>
+              <th>Cantidad de personas</th>
+              <th>Estatus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data">
+              <td>
+                <div class="">
+                  <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i style="color: black!important;" class="icon-options-vertical font-15"></i></a>
+                  <div class="dropdown-menu p-0 m-0 dropdown-menu-right">
+                    <a class="dropdown-item edit-todo" (click)="showModal(data)">Editar</a>
+                    <a class="dropdown-item delete" (click)="desHab(data.memid, 1)">{{ data.estId == 6 ? 'Deshabilitar' : 'Habilitar'}}</a>                                        
+                    <a class="dropdown-item delete" (click)="showDeleteConfirm(data.memid)">Eliminar</a>                                        
+                  </div>
+                </div>
+              </td>
+              <td>{{ data.memnombre }}</td>
+              <td>{{ data.memdescripcion }}</td>
+              <td>${{ data.memprecio }}</td>
+              <td>{{ data.memduracion }} Días</td>
+              <td>{{ data.mempersonas }} Persona</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="data.estId == 6 ? 'badge-success' : 'badge-danger'"
+                >
+                  {{ data.estId == 6 ? "ACTIVA" : "INACTIVA" }}
+                </span>
+              </td>
+              
+            </tr>
+          </tbody>
+        </nz-table>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="titleModal"
+  nzClosable="false"
+  nzMaskClosable="false"
+  [nzFooter]="null"
+  nzWidth="700px"
+>
+  <!-- <p *nzModalContent></p> -->
+  <div *nzModalContent>
+    <form [formGroup]="membresiaForm" (ngSubmit)="handleOk()">
+      <div class="form-group row">
+        <label for="nombre" class="col-sm-2 col-form-label">*Nombre</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            [ngClass]="membresiaForm.get('memnombre')?.hasError('required') ? 'is-invalid' : 'is-valid'"
+            formControlName="memnombre"
+            placeholder="Nombre de la membresia"
+          />
+          <div *ngIf="membresiaForm.get('memnombre')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="descripcion" class="col-sm-2 col-form-label"
+          >Descripción</label
+        >
+        <div class="col-sm-10">
+          <textarea
+            type="text"
+            formControlName="memdescripcion"
+            class="form-control"
+            id="descripcion"
+            placeholder="Descripción de la membresia"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="Precio" class="col-sm-2 col-form-label">*Precio</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            [ngClass]="membresiaForm.get('memprecio')?.hasError('required') ? 'is-invalid' : 'is-valid'"
+            id="Precio"
+            formControlName="memprecio"
+            placeholder="Precio de la membresia"
+          />
+
+            <div *ngIf="membresiaForm.get('memprecio')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="Duracion" class="col-sm-2 col-form-label">*Duración en días</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            [ngClass]="membresiaForm.get('memduracion')?.hasError('required') || membresiaForm.get('memduracion')?.hasError('min') ? 'is-invalid' : 'is-valid'"
+            id="Duracion"
+            formControlName="memduracion"
+            placeholder="Duración de la membresia"
+          />
+            <div *ngIf="membresiaForm.get('memduracion')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+            <div *ngIf="membresiaForm.get('memduracion')?.hasError('min')" class="invalid-feedback">
+                La duración debe ser mayor a 0.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="Cantidad" class="col-sm-2 col-form-label">*Cantidad</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            [ngClass]="membresiaForm.get('mempersonas')?.hasError('required') || membresiaForm.get('mempersonas')?.hasError('min') ? 'is-invalid' : 'is-valid'"
+            id="Cantidad"
+            formControlName="mempersonas"
+            placeholder="Cantidad de personas"
+          />
+            <div *ngIf="membresiaForm.get('mempersonas')?.hasError('required')" class="invalid-feedback">
+                Este campo es obligatorio.
+            </div>
+            <div *ngIf="membresiaForm.get('mempersonas')?.hasError('min')" class="invalid-feedback">
+                La cantidad debe ser mayor a 0.
+            </div>
+        </div>
+      </div>
+
+      <app-loading *ngIf="isConfirmLoading"></app-loading>
+
+      <div *ngIf="!isConfirmLoading" class="row mt-4">
+        <div class="col-6">
+          <button
+            class="btn-block"
+            nzType="primary"
+            nz-button
+            type="submit"
+            [nzLoading]="isConfirmLoading"
+            
+          >
+            Guardar
+          </button>
+        </div>
+        <div class="col-6">
+          <button
+            class="btn-block"
+            nz-button
+            nzType="default"
+            type="button"
+            (click)="handleCancel()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</nz-modal>

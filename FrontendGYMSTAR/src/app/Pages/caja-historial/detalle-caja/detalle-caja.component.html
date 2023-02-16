@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header  justify-content-between align-items-center">                               
+                <!-- <h4 class="card-title">Primary</h4>   -->
+                <span class="text-primary">Ventas de caja : {{fechaInicio | date:'medium'}} - {{fechaFin | date:'medium' }} </span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <div class="border-0 outline-badge-info w-100 p-3 rounded text-center"><span class="h6">${{vendido}}</span><br>
+                            Total Vendido
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border-0 outline-badge-dark w-100 p-3 rounded text-center"><span class="h6">${{montoApertura}}</span><br>
+                            Monto Apertura
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border-0 outline-badge-danger w-100 p-3 rounded text-center"><span class="h6 ">${{montoCierre}}</span><br>
+                            Monto Cierre
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+
+                        
+
+
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Referencia</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Hora</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pag of pagos; let i=index">
+                                <th scope="row">{{pag.pago.referencia}}</th>
+                                <td>{{pag.pago.descripcion}}</td>
+                                <td>{{pag.pago.fechaPago | date}}</td>
+                                <td>{{pag.pago.horaPago}}</td>
+                                <td>${{pag.pago.total}}</td>
+                                <td>
+                                <button type="button" (click)="showModalDetail(pag.pago.pagoid, pag.pago.referencia)"
+                                class="btn btn-outline-info btn-sm">
+                                <i class="icon-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nz-modal
+  [(nzVisible)]="isVisibleMiddle"
+  [nzTitle]="'Detalle de pago ' + refe"
+  nzCentered
+  nzClosable="false"
+  nzMaskClosable="false"
+
+  nzOkText="Ok"
+  nzCancelText="cancelar"
+  nzCancelDisabled="true"
+  (nzOnOk)="handleOkMiddle()"
+  >
+  <ng-container *nzModalContent>
+   <div class="table-responsive">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Descripción</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detail of pagosDetail; let i=index">
+        <th scope="row">{{detail.descripcion}}</th>
+        <td>{{detail.cantidad}}</td>
+        <td>${{detail.subtotal}}</td>
+
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+  </ng-container>
+</nz-modal>

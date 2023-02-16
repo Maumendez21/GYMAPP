@@ -1,0 +1,73 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        
+        <th scope="col">Referencia</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Hora</th>
+        <th scope="col">Total</th>
+        <th scope="col">Detalle</th>
+      </tr>
+    </thead>
+    <tbody  *ngIf="pagos.length > 0">
+      <tr *ngFor="let pag of pagos; let i=index">
+        <th scope="row">{{pag.pago.referencia}}</th>
+        <td>{{pag.pago.descripcion}}</td>
+        <td>{{pag.pago.fechaPago | date}}</td>
+        <td>{{pag.pago.horaPago}}</td>
+        <td>${{pag.pago.total}}</td>
+        <td>
+          <button type="button" (click)="showModalDetail(pag.pago.pagoid, pag.pago.referencia)"
+           class="btn btn-outline-info btn-sm">
+           <i class="icon-eye"></i></button>
+        </td>
+      </tr>
+      <nz-pagination  [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+    </tbody>
+
+    
+  </table>
+  <div *ngIf="pagos.length === 0">
+    <div class="alert alert-primary" role="alert">
+      No se ha realizado ninguna venta.
+    </div>
+  </div>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisibleMiddle"
+  [nzTitle]="'Detalle de pago ' + refe"
+  nzCentered
+  nzClosable="false"
+  nzMaskClosable="false"
+
+  nzOkText="Ok"
+  nzCancelText="cancelar"
+  nzCancelDisabled="true"
+  (nzOnOk)="handleOkMiddle()"
+  >
+  <ng-container *nzModalContent>
+   <div class="table-responsive">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Descripción</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detail of pagosDetail; let i=index">
+        <th scope="row">{{detail.descripcion}}</th>
+        <td>{{detail.cantidad}}</td>
+        <td>${{detail.subtotal}}</td>
+
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+  </ng-container>
+</nz-modal>

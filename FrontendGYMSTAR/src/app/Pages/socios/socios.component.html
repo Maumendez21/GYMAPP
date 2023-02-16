@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-12">
+        <!-- <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">                               
+                <h4 class="card-title">Socios registrados en sistema.</h4>                                   
+            </div>
+            <div class="card-body">
+                
+            </div>
+        </div> -->
+
+        <nz-table
+            #dynamicTable
+            [nzScroll]="{ x: 'fixed', y: 'scroll' }"
+            [nzData]="listOfData"
+            [nzPaginationType]="'small'"
+            [nzPaginationPosition]="'bottom'"
+            [nzShowSizeChanger]="true"
+            [nzFrontPagination]="true"
+            [nzShowPagination]="true"
+            [nzSize]="'middle'"
+            [nzTitle]="'Socios registrados en sistema.'"
+        >
+            <thead class="thead-dark">
+                <tr >
+                    <th nzWidth="80px" [nzLeft]="false">Acciones</th>
+                    <th [nzLeft]="false">Nombre completo</th>
+                    <th [nzLeft]="false">Correo</th>
+                    <th [nzLeft]="false">Telefono</th>
+                    <th [nzLeft]="false">Asociado a</th>
+                    <th [nzLeft]="false">Proximo Pago</th>
+                    <th [nzLeft]="false">Estatus</th>
+                </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let data of dynamicTable.data">
+                <tr>
+                    <td>
+                        <div class="">
+                        <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i style="color: black!important;" class="icon-options-vertical font-15"></i></a>
+                        <div class="dropdown-menu p-0 m-0 dropdown-menu-right">
+                            <a class="dropdown-item edit-todo" (click)="editSocioModal(data.idSocio)">Editar</a>
+                            <a class="dropdown-item eye" (click)="detalleMembresia(data.idMemsocid)">Ver detalle de membresia</a>                                        
+                            <!-- <a class="dropdown-item delete" (click)="showDeleteConfirm(data.memid)">Eliminar</a>                                         -->
+                        </div>
+                        </div>
+                    </td>
+                    <!-- <td [nzLeft]="fixedColumn" *ngIf="settingValue.expandable" [(nzExpand)]="data.expand"></td> -->
+                    <td [nzLeft]="false">{{ data.user.usrnombre }} {{ data.user.usrapp }} {{ data.user.usrapm }}</td>
+                    <td>{{ data.user.usremail }}</td>
+                    <td>{{ data.user.usrtelefono }}</td>
+                    <td>{{ data.memnombre }}</td>
+                    <td>{{ data.fechaPago | date }}</td>
+                    <td>
+                        <span
+                        class="badge"
+                        [ngClass]="data.estId == 3 ? 'badge-success' : 'badge-danger'"
+                        >
+                        {{ data.estId == 3 ? "ACTIVO" : "SIN PAGAR" }}
+                        </span>
+                    </td>
+                </tr>
+                <!-- <tr [nzExpand]="data.expand">
+                    <h6 [ngStyle]="{ margin: '16px 0' }">{{ data.memdescripcion }}</h6>
+                    <nz-list nzBordered nzSize="small">
+                        <nz-list-header>Integrantes</nz-list-header>
+                        <nz-list-item *ngFor="let item of data.users">{{item.usrnombre}} {{item.usrapp}} {{item.usrapm}} - {{item.usremail}} - {{item.usrtelefono || 'Sin teléfono'}}</nz-list-item>
+                    </nz-list>
+                </tr> -->
+            </ng-container>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

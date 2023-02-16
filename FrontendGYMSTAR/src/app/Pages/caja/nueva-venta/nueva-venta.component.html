@@ -1,0 +1,120 @@
+<nz-form-item>
+    <!-- <nz-form-label [nzSpan]="3.5" nzRequired nzFor="note">Descripción</nz-form-label> -->
+    <nz-form-control [nzSpan]="23" nzErrorTip="Please input your username!">
+        <input id="note" type="text" nz-input nzSize="large" [(ngModel)]="descripcionPago" />
+    </nz-form-control>
+</nz-form-item>
+
+
+<h6>Agrega a la cuenta o selecciona productos a vender</h6>
+<div class="row">
+    <div class="col-12 col-md-12 col-sm-12">
+        <nz-collapse [nzBordered]="true">
+            <nz-collapse-panel
+                #p
+                
+                nzHeader="Agregar a la cuenta"
+                [nzActive]="false"
+                [ngStyle]="{
+                    background: '#f7f7f7',
+                    'border-radius': '4px',
+                    'margin-bottom': '0px'
+                    
+                }"
+                [nzExpandedIcon]="'double-right'"
+            >
+                <form
+                    nz-form
+                    [nzLayout]="'vertical'"
+                    [formGroup]="detalleForm"
+                    (ngSubmit)="submitForm()"
+                    >
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="null">Descripción</nz-form-label>
+                        <nz-form-control [nzSpan]="null" nzErrorTip="La descripción del producto es obligatoria.">
+                        <input nz-input formControlName="descripcionDetalle" placeholder="Descripción del producto" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label >Subtotal</nz-form-label>
+                        <nz-form-control  nzErrorTip="El subtotal es obligatorio">
+                        <input type="number" nz-input formControlName="subtotal" placeholder="Subtotal $" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label >Cantidad</nz-form-label>
+                        <nz-form-control  nzErrorTip="La cantidad es obligatoria">
+                        <input type="number" nz-input formControlName="cantidad" placeholder="Cantidad" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control  [nzOffset]="null">
+                        <button type="submit" nz-button nzType="primary">Agregar</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </nz-collapse-panel>
+        </nz-collapse>
+        <nz-collapse [nzBordered]="true">
+            <nz-collapse-panel
+                nzHeader="Agregar producto"
+                [nzActive]="false"
+                [ngStyle]="{
+                    background: '#f7f7f7',
+                    'border-radius': '4px',
+                    'margin-bottom': '24px'
+                    
+                }"
+                [nzExpandedIcon]="'double-right'"
+            >
+                <p>PRODUCTOS</p>
+
+            </nz-collapse-panel>
+        </nz-collapse>
+    </div>
+</div>
+
+<h6>Detalle</h6>
+<app-loading class="mb-5" *ngIf="isLoading"></app-loading>
+
+<div class="row">
+    <div class="col-md-9">
+  
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of listDetails; let i=index;">
+                    <td>{{ data.descripcionDetalle }}</td>
+                    <td>${{ data.subtotal }}</td>
+                    <td>{{ data.cantidad }}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="quitardeCuenta(i)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-md-3">
+        <h4>Total: ${{total}}</h4>
+        <button
+          type="button"
+          [disabled]="listDetails.length === 0 && !isLoading"
+          class="btn btn-primary btn-block"
+          (click)="showPagoConfirm()"
+        >
+          Pagar
+        </button>
+    </div>
+</div>
+
+
