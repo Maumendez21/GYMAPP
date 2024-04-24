@@ -17,8 +17,8 @@ const base_url = environment.API_URL;
 export class GeneralService {
   constructor(
     private http: HttpClient,
+    private router: Router,
     private store: Store<AppState>,
-    private router: Router
   ) {}
 
   private _user!: User | null;

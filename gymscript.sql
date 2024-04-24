@@ -1,4 +1,4 @@
-use GYMSTAR
+use GYMAPP
 select *  from Usuario
 select *  from Gimnasio
 

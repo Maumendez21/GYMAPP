@@ -231,7 +231,7 @@ namespace BackendGymStar.Services.Asocios
 
             membresiaPagar.Memnombre = dataSocio.MemSoc.Membresia.Memnombre;
             membresiaPagar.Memdescripcion = dataSocio.MemSoc.Membresia.Memdescripcion;
-            membresiaPagar.idMemsocid = (int)dataSocio.MemSocid;
+            membresiaPagar.idMemsocid = (int)dataSocio.MemSocid!;
 
             membresiaPagar.proxFechaPago = dataSocio.MemSoc.FechaPago.AddDays(dataSocio.MemSoc.Membresia.Memduracion);
             membresiaPagar.precioMembresia = (decimal)dataSocio.MemSoc.Membresia.Memprecio;
